@@ -1,0 +1,42 @@
+import pandas as pd
+import gspread
+from gspread_dataframe import set_with_dataframe
+from google.oauth2.service_account import Credentials
+import json
+import os
+
+print("Starting NFL standings update...")
+
+creds_json = json.loads(os.environ['GOOGLE_CREDENTIALS'])
+creds = Credentials.from_service_account_info(
+    creds_json,
+    scopes=[
+        'https://spreadsheets.google.com/feeds',
+        'https://www.googleapis.com/auth/drive'
+    ]
+)
+gs = gspread.authorize(creds)
+print("Authenticated successfully.")
+
+URL = "https://www.espn.com/nfl/standings"
+df = pd.read_html(URL)
+print(f"Tables pulled: {len(df)}")
+
+df_afc = pd.concat([df[0], df[1]], axis=1)
+df_nfc = pd.concat([df[2], df[3]], axis=1)
+df_nfl = pd.concat([df_afc, df_nfc])
+print(f"Standings shape: {df_nfl.shape}")
+
+workbook  = gs.open("Copy  / AI  2025 NFL Pick Em")
+worksheet = workbook.worksheet('Win Pct')
+
+set_with_dataframe(
+    worksheet, df_nfl,
+    include_index=False,
+    include_column_header=True,
+    resize=False,
+    row=54,
+    col=2
+)
+
+print("Google Sheet updated successfully!")
