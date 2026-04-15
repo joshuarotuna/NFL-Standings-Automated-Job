@@ -1,4 +1,4 @@
-# NFL-Standings-Automated-Job
+# GitHub Action Workflow Job
 
 Created this repository to establish an automated Job to refresh NFL Standings and update a Google Sheets document in real time. I have been managing a NFL Pick Em League annually where players choose a team to win once a week for the duration of the NFL season but they are not allowed to choose a team more than once. In the event of a tiebreaker, the lowest win percentage decides the winner as it essentially rewards the player who took more underdogs. This repositiry documents my process in leverging Claude to establish GitHub workflow jobs to automatically execute my own Python Code and update the Google Sheets league standings in an automated manner.
 
