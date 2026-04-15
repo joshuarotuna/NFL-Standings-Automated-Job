@@ -43,3 +43,40 @@ set_with_dataframe(
 )
 
 print("Google Sheet updated successfully!")
+
+
+name: NFL Standings Updater
+
+on:
+  schedule:
+    # All times are UTC — adjust for your timezone
+    # EST = UTC - 5  |  CST = UTC - 6  |  PST = UTC - 8
+    - cron: '0 18 * * 0'    # Sunday 1pm EST
+    - cron: '0 22 * * 0'    # Sunday 5pm EST
+    - cron: '0 2  * * 1'    # Sunday 9pm EST (Monday UTC)
+    - cron: '0 18 * * 1'    # Monday 1pm EST
+
+  # Allows you to run manually from GitHub as well
+  workflow_dispatch:
+
+jobs:
+  update_standings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas gspread gspread-dataframe google-auth lxml html5lib
+
+      - name: Run standings update
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: python nfl_standings.py
