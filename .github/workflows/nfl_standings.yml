@@ -1,29 +1,11 @@
-name: NFL Standings Updater
+name: Test
 
 on:
-  schedule:
-    - cron: "0 18 * * 0"
-    - cron: "0 22 * * 0"
-    - cron: "0 2 * * 1"
-    - cron: "0 18 * * 1"
   workflow_dispatch:
 
 jobs:
-  update_standings:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: Install dependencies
-        run: pip install pandas gspread gspread-dataframe google-auth lxml html5lib
-
-      - name: Run standings update
-        run: python nfl_standings.py
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: Say hello
+        run: echo "Hello World"
