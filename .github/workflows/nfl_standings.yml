@@ -2,7 +2,7 @@ name: NFL Standings Updater
 
 on:
   schedule:
-    - cron: "57 3 * * *"
+     - cron: "30 4 * * *"
   workflow_dispatch:
 
 jobs:
